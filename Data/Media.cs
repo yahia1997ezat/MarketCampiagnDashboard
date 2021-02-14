@@ -8,6 +8,6 @@ namespace BlazorApp.Data
         public DateTime CreatedAt;
         public string MediaFile;
         public Advertiser Advertiser;
-        
+        public Channel[] Channels;
     }
 }
