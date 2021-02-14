@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace BlazorApp.Shared
+namespace BlazorApp.Pages
 {
     #line hidden
     using System;
@@ -96,13 +96,40 @@ using Blazored.Modal.Services;
 #line default
 #line hidden
 #nullable disable
-    public partial class MainLayout : LayoutComponentBase
+#nullable restore
+#line 3 "C:\projects\blazor\BlazorApp\Pages\MarketingCampaign.razor"
+using BlazorApp.Data;
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/marketing-campaign")]
+    public partial class MarketingCampaign : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 66 "C:\projects\blazor\BlazorApp\Pages\MarketingCampaign.razor"
+       
+    private Data.MarketingCampaign[] _marketingCampaigns;
+    [CascadingParameter] public IModalService Modal { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _marketingCampaigns = await MarketingCampaignService.GetMarketCampaignAsync();
+    }
+    void ShowEditMovie(int movieId)
+    {
+        Modal.Show<AddCampaign>("Add Market Campaign");
+    }
+
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private MarketingCampaignService MarketingCampaignService { get; set; }
     }
 }
 #pragma warning restore 1591

@@ -4,10 +4,11 @@ namespace BlazorApp.Data
 {
     public class Media
     {
+        public long Id;
         public string Name;
         public DateTime CreatedAt;
         public string MediaFile;
-        public Advertiser Advertiser;
         public Channel[] Channels;
+        public long[] ChannelIds;
     }
 }

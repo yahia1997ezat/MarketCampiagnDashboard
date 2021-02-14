@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace BlazorApp.Shared
+namespace BlazorApp.Pages
 {
     #line hidden
     using System;
@@ -96,13 +96,60 @@ using Blazored.Modal.Services;
 #line default
 #line hidden
 #nullable disable
-    public partial class MainLayout : LayoutComponentBase
+#nullable restore
+#line 1 "C:\projects\blazor\BlazorApp\Pages\AddCampaign.razor"
+using BlazorApp.Data;
+
+#line default
+#line hidden
+#nullable disable
+    public partial class AddCampaign : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 72 "C:\projects\blazor\BlazorApp\Pages\AddCampaign.razor"
+       
+
+    [CascadingParameter]
+    BlazoredModalInstance ModalInstance { get; set; }
+
+    private Data.Media[] _medias;
+    private Data.Advertiser[] _advertisers;
+    private Data.Publisher[] _publisher;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _medias = await MarketingCampaignService.GetMediasAsync();
+        _advertisers = await MarketingCampaignService.GetAdvertisersAsync();
+        _publisher = await MarketingCampaignService.GetPublishersAsync();
+    }
+
+    Data.MarketingCampaign MarketingCampaign { get; set; }
+
+    protected override void OnInitialized()
+    {
+        MarketingCampaign = new Data.MarketingCampaign()
+        {
+            StartDate = DateTime.Now,
+            EndDate = DateTime.Now.Add(new TimeSpan(5))
+        };
+    }
+
+    void SaveMovie()
+    {
+        MarketingCampaignService.Add(MarketingCampaign);
+    // ModalInstance.CloseAsync(ModalResult.Ok<MarketingCampaign>(MarketingCampaign));
+    }
+
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private MarketingCampaignService MarketingCampaignService { get; set; }
     }
 }
 #pragma warning restore 1591

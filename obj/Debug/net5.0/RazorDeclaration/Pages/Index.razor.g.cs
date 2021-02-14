@@ -82,6 +82,20 @@ using BlazorApp.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 11 "C:\projects\blazor\BlazorApp\_Imports.razor"
+using Blazored.Modal;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 12 "C:\projects\blazor\BlazorApp\_Imports.razor"
+using Blazored.Modal.Services;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/")]
     public partial class Index : Microsoft.AspNetCore.Components.ComponentBase
     {

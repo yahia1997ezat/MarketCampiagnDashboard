@@ -56,3 +56,9 @@ C:\projects\blazor\BlazorApp\obj\Debug\net5.0\ref\BlazorApp.dll
 C:\projects\blazor\BlazorApp\obj\Debug\net5.0\BlazorApp.pdb
 C:\projects\blazor\BlazorApp\obj\Debug\net5.0\BlazorApp.genruntimeconfig.cache
 C:\projects\blazor\BlazorApp\obj\Debug\net5.0\BlazorApp.csproj.CopyComplete
+C:\projects\blazor\BlazorApp\obj\Debug\net5.0\RazorDeclaration\Pages\MarketingCampaign.razor.g.cs
+C:\projects\blazor\BlazorApp\obj\Debug\net5.0\Razor\Pages\MarketingCampaign.razor.g.cs
+C:\projects\blazor\BlazorApp\bin\Debug\net5.0\Blazored.Modal.dll
+C:\projects\blazor\BlazorApp\bin\Debug\net5.0\Microsoft.JSInterop.WebAssembly.dll
+C:\projects\blazor\BlazorApp\obj\Debug\net5.0\RazorDeclaration\Pages\AddCampaign.razor.g.cs
+C:\projects\blazor\BlazorApp\obj\Debug\net5.0\Razor\Pages\AddCampaign.razor.g.cs

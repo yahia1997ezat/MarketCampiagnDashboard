@@ -4,7 +4,7 @@ namespace BlazorApp.Data
 {
     public class Channel
     {
-        public Guid Id;
+        public long Id;
         public string Name;
     }
 }

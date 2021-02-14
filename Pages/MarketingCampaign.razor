@@ -1,0 +1,78 @@
+@page "/marketing-campaign"
+
+@using BlazorApp.Data
+@inject MarketingCampaignService MarketingCampaignService
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+            <b>
+                Marketing Campaigns<br/>
+                <small>This component demonstrates fetching data from a service.</small>
+            </b>    
+        </div>
+        <div>
+            <button class="btn btn-info text-capitalize" @onclick="@(() => Modal.Show<AddCampaign>("My Movies"))">
+                <i class="fa fa-add"></i> add
+            </button>
+        </div>
+        
+    </div>
+    <div class="card-body">
+        @if (_marketingCampaigns == null)
+        {
+            <p>
+                <em>Loading...</em>
+            </p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Campaign</th>
+                    <th>Advertiser</th>
+                    <th>Media</th>
+                    <th>Budget</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var marketingCampaign in _marketingCampaigns)
+                {
+                    <tr>
+                        <td>@marketingCampaign.StartDate.ToShortDateString()</td>
+                        <td>@marketingCampaign.EndDate.ToShortDateString()</td>
+                        <td>@marketingCampaign.Name</td>
+                        <td>@marketingCampaign.Advertiser?.Name</td>
+                        <td>@marketingCampaign.Media?.Name</td>
+                        <td>@marketingCampaign.Budget €</td>
+                        <td>
+                            <button class="btn btn-light ">
+                                <i class="fa fa-edit text-primary"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+
+    </div>
+</div>
+
+
+@code {
+    private Data.MarketingCampaign[] _marketingCampaigns;
+    [CascadingParameter] public IModalService Modal { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _marketingCampaigns = await MarketingCampaignService.GetMarketCampaignAsync();
+    }
+    void ShowEditMovie(int movieId)
+    {
+        Modal.Show<AddCampaign>("Add Market Campaign");
+    }
+
+}
