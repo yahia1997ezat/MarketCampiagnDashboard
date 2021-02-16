@@ -10,5 +10,7 @@ namespace BlazorApp.Data
         public string MediaFile;
         public Channel[] Channels;
         public long[] ChannelIds;
+        public Advertiser Advertiser;
+        public long AdvertiserId;
     }
 }

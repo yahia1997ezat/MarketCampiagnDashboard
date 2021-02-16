@@ -111,38 +111,37 @@ using BlazorApp.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 72 "C:\projects\blazor\BlazorApp\Pages\AddCampaign.razor"
+#line 71 "C:\projects\blazor\BlazorApp\Pages\AddCampaign.razor"
        
+
+    private string fieldLayoutClass = "col-12 ";
 
     [CascadingParameter]
     BlazoredModalInstance ModalInstance { get; set; }
 
-    private Data.Media[] _medias;
-    private Data.Advertiser[] _advertisers;
-    private Data.Publisher[] _publisher;
+    [Parameter]
+    public MarketingCampaign EditMarketCampaign { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        _medias = await MarketingCampaignService.GetMediasAsync();
-        _advertisers = await MarketingCampaignService.GetAdvertisersAsync();
-        _publisher = await MarketingCampaignService.GetPublishersAsync();
-    }
+    private MarketingCampaign MarketingCampaign { get; set; }
 
-    Data.MarketingCampaign MarketingCampaign { get; set; }
 
     protected override void OnInitialized()
     {
-        MarketingCampaign = new Data.MarketingCampaign()
+        MarketingCampaign = new MarketingCampaign()
         {
             StartDate = DateTime.Now,
             EndDate = DateTime.Now.Add(new TimeSpan(5))
         };
     }
 
-    void SaveMovie()
+    void SubmitForm()
     {
-        MarketingCampaignService.Add(MarketingCampaign);
-    // ModalInstance.CloseAsync(ModalResult.Ok<MarketingCampaign>(MarketingCampaign));
+        ModalInstance.CloseAsync(ModalResult.Ok(MarketingCampaign));
+    }
+
+    void Cancel()
+    {
+        ModalInstance.CancelAsync();
     }
 
 

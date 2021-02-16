@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace BlazorApp.Shared
+namespace BlazorApp.Pages
 {
     #line hidden
     using System;
@@ -96,7 +96,15 @@ using Blazored.Modal.Services;
 #line default
 #line hidden
 #nullable disable
-    public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
+#nullable restore
+#line 3 "C:\projects\blazor\BlazorApp\Pages\PublisherTable.razor"
+using BlazorApp.Data;
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/publishers")]
+    public partial class PublisherTable : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -104,21 +112,34 @@ using Blazored.Modal.Services;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 44 "C:\projects\blazor\BlazorApp\Shared\NavMenu.razor"
+#line 73 "C:\projects\blazor\BlazorApp\Pages\PublisherTable.razor"
        
-    private bool collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
 
-    private void ToggleNavMenu()
+    async void ShowEditPublisher(long id)
     {
-        collapseNavMenu = !collapseNavMenu;
+        var parameters = new ModalParameters();
+        parameters.Add("EditPublisher", id > 0 ? MarketingCampaignService.Publishers.FirstOrDefault((publisher) => publisher.Id == id) : null);
+        var formModal = Modal.Show<AddPublisher>("Add Publisher", parameters);
+        var result = await formModal.Result;
+        if (result.Cancelled)
+        {
+            Console.WriteLine("Modal was cancelled");
+        }
+        else
+        {
+            MarketingCampaignService.MarketingCampaigns.Add((MarketingCampaign) result.Data);
+            StateHasChanged();
+        }
     }
 
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private MarketingCampaignService MarketingCampaignService { get; set; }
     }
 }
 #pragma warning restore 1591

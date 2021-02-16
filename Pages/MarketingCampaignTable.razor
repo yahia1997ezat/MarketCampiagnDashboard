@@ -1,4 +1,4 @@
-@page "/marketing-campaign"
+@page "/marketing-campaigns"
 
 @using BlazorApp.Data
 @inject MarketingCampaignService MarketingCampaignService
@@ -8,17 +8,17 @@
             <b>
                 Marketing Campaigns<br/>
                 <small>This component demonstrates fetching data from a service.</small>
-            </b>    
+            </b>
         </div>
         <div>
-            <button class="btn btn-info text-capitalize" @onclick="@(() => Modal.Show<AddCampaign>("My Movies"))">
+            <button class="btn btn-info text-capitalize" @onclick="@(() => ShowEditCampaign(0))">
                 <i class="fa fa-add"></i> add
             </button>
         </div>
-        
+
     </div>
     <div class="card-body">
-        @if (_marketingCampaigns == null)
+        @if (MarketingCampaignService.MarketingCampaigns == null)
         {
             <p>
                 <em>Loading...</em>
@@ -39,7 +39,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (var marketingCampaign in _marketingCampaigns)
+                @foreach (var marketingCampaign in MarketingCampaignService.MarketingCampaigns)
                 {
                     <tr>
                         <td>@marketingCampaign.StartDate.ToShortDateString()</td>
@@ -49,7 +49,7 @@
                         <td>@marketingCampaign.Media?.Name</td>
                         <td>@marketingCampaign.Budget €</td>
                         <td>
-                            <button class="btn btn-light ">
+                            <button @onclick="@(() => ShowEditCampaign(marketingCampaign.Id))" class="btn btn-light ">
                                 <i class="fa fa-edit text-primary"></i>
                             </button>
                         </td>
@@ -64,15 +64,26 @@
 
 
 @code {
-    private Data.MarketingCampaign[] _marketingCampaigns;
-    [CascadingParameter] public IModalService Modal { get; set; }
-    protected override async Task OnInitializedAsync()
+
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
+
+    async void ShowEditCampaign(long id)
     {
-        _marketingCampaigns = await MarketingCampaignService.GetMarketCampaignAsync();
-    }
-    void ShowEditMovie(int movieId)
-    {
-        Modal.Show<AddCampaign>("Add Market Campaign");
+        var parameters = new ModalParameters();
+        parameters.Add("EditMarketCampaign", id > 0 ? MarketingCampaignService.MarketingCampaigns.FirstOrDefault((marketingCampaign) => marketingCampaign.Id == id) : null);
+        var formModal = Modal.Show<AddCampaign>("Add Market Campaign", parameters);
+        var result = await formModal.Result;
+
+        if (result.Cancelled)
+        {
+            Console.WriteLine("Modal was cancelled");
+        }
+        else
+        {
+            MarketingCampaignService.MarketingCampaigns.Add((MarketingCampaign) result.Data);
+            StateHasChanged();
+        }
     }
 
 }

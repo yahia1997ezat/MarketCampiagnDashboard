@@ -97,14 +97,14 @@ using Blazored.Modal.Services;
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\projects\blazor\BlazorApp\Pages\MarketingCampaign.razor"
+#line 3 "C:\projects\blazor\BlazorApp\Pages\MarketingCampaignTable.razor"
 using BlazorApp.Data;
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/marketing-campaign")]
-    public partial class MarketingCampaign : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/marketing-campaigns")]
+    public partial class MarketingCampaignTable : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -112,17 +112,28 @@ using BlazorApp.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 66 "C:\projects\blazor\BlazorApp\Pages\MarketingCampaign.razor"
+#line 66 "C:\projects\blazor\BlazorApp\Pages\MarketingCampaignTable.razor"
        
-    private Data.MarketingCampaign[] _marketingCampaigns;
-    [CascadingParameter] public IModalService Modal { get; set; }
-    protected override async Task OnInitializedAsync()
+
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
+
+    async void ShowEditCampaign(long id)
     {
-        _marketingCampaigns = await MarketingCampaignService.GetMarketCampaignAsync();
-    }
-    void ShowEditMovie(int movieId)
-    {
-        Modal.Show<AddCampaign>("Add Market Campaign");
+        var parameters = new ModalParameters();
+        parameters.Add("EditMarketCampaign", id > 0 ? MarketingCampaignService.MarketingCampaigns.FirstOrDefault((marketingCampaign) => marketingCampaign.Id == id) : null);
+        var formModal = Modal.Show<AddCampaign>("Add Market Campaign", parameters);
+        var result = await formModal.Result;
+
+        if (result.Cancelled)
+        {
+            Console.WriteLine("Modal was cancelled");
+        }
+        else
+        {
+            MarketingCampaignService.MarketingCampaigns.Add((MarketingCampaign) result.Data);
+            StateHasChanged();
+        }
     }
 
 

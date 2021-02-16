@@ -1,0 +1,102 @@
+@page "/medias"
+
+@using BlazorApp.Data
+@inject MarketingCampaignService MarketingCampaignService
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+            <b>
+                Media<br/>
+                <small>You marketing assets.</small>
+            </b>
+        </div>
+        <div>
+            <button class="btn btn-info text-capitalize" @onclick="@(() => ShowEditCampaign(0))">
+                <i class="fa fa-add"></i> add
+            </button>
+        </div>
+
+    </div>
+    <div class="card-body">
+        @if (MarketingCampaignService.MarketingCampaigns == null)
+        {
+            <p>
+                <em>Loading...</em>
+            </p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Preview</th>
+                    <th>Advertiser</th>
+                    <th>CreatedAt</th>
+                    <th>Channels</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var media in MarketingCampaignService.Medias)
+                {
+                    <tr>
+                        <th>@media.Id</th>
+                        <th>@media.Name</th>
+                        <th>
+                            @if (@media.MediaFile != null)
+                            {
+                                <a href="@media.MediaFile">
+                                    <i class="fa fa-link"></i>
+                                </a>
+                            }
+
+                        </th>
+                        <th>@media.Advertiser?.Name</th>
+                        <th>@media.CreatedAt</th>
+                        <th>
+                            @foreach (var channel in media.Channels)
+                            {
+                                <span class="mr-2">@channel?.Name,</span>
+                            }
+                        </th>
+                        <td>
+                            <button @onclick="@(() => ShowEditCampaign(media.Id))" class="btn btn-light ">
+                                <i class="fa fa-edit text-primary"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+
+    </div>
+</div>
+
+
+@code {
+
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
+
+    async void ShowEditCampaign(long id)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add("EditMarketCampaign", id > 0 ? MarketingCampaignService.Medias.FirstOrDefault((media) => media.Id == id) : null);
+        var formModal = Modal.Show<AddMedia>("Add Media", parameters);
+        var result = await formModal.Result;
+
+        if (result.Cancelled)
+        {
+            Console.WriteLine("Modal was cancelled");
+        }
+        else
+        {
+            MarketingCampaignService.Medias.Add((Media) result.Data);
+            StateHasChanged();
+        }
+    }
+
+}
