@@ -8,7 +8,7 @@ namespace BlazorApp.Data
 {
     public class MarketingCampaignService
     {
-        public static IList<Channel> Channels = new[]
+        public static IList<Channel> Channels = new List<Channel>()
         {
             new Channel()
             {
@@ -27,43 +27,49 @@ namespace BlazorApp.Data
             },
         };
 
-        public static IList<Advertiser> Advertisers = new[]
+        public static IList<Advertiser> Advertisers = new List<Advertiser>()
         {
             new Advertiser()
             {
                 Id = 1,
-                Name = "Yahia"
+                Name = "Apple",
+                Email = "marketing@apple.com"
             },
             new Advertiser()
             {
                 Id = 2,
-                Name = "Andrew"
+                Name = "Samsung",
+                Email = "marketing@samsung.com"
             },
         };
 
-        public static IList<Publisher> Publishers = new[]
+        public static IList<Publisher> Publishers = new List<Publisher>()
         {
             new Publisher()
             {
                 Id = 1,
-                Name = "Yahia",
-                Channels = Array.Empty<Channel>(),
-                ChannelsIds = Array.Empty<long>(),
+                Name = "All3Media",
+                Email = "marketing@all3media.com",
+                Channels = new Channel[]
+                {
+                    Channels[1]
+                },
                 MarketingCampaigns = Array.Empty<MarketingCampaign>(),
-                MarketingCampaignIds = Array.Empty<long>()
             },
             new Publisher()
             {
                 Id = 2,
-                Name = "Andrew",
-                Channels = Array.Empty<Channel>(),
-                ChannelsIds = Array.Empty<long>(),
+                Name = "Shine Group",
+                Email = "info@shinegroup.com",
+                Channels = new Channel[]
+                {
+                    Channels[0]
+                },
                 MarketingCampaigns = Array.Empty<MarketingCampaign>(),
-                MarketingCampaignIds = Array.Empty<long>()
             },
         };
 
-        public static IList<Media> Medias = new[]
+        public static IList<Media> Medias = new List<Media>()
         {
             new Media()
             {
@@ -75,7 +81,6 @@ namespace BlazorApp.Data
                     Channels[0],
                     Channels[1]
                 },
-                ChannelIds = new long[] {1, 2}
             },
             new Media()
             {
@@ -86,7 +91,6 @@ namespace BlazorApp.Data
                 {
                     Channels[1]
                 },
-                ChannelIds = new long[] {1}
             },
         };
 

@@ -111,7 +111,7 @@ using BlazorApp.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 71 "C:\projects\blazor\BlazorApp\Pages\AddAdvertiser.razor"
+#line 23 "C:\projects\blazor\BlazorApp\Pages\AddAdvertiser.razor"
        
 
     private string fieldLayoutClass = "col-12 ";
@@ -120,23 +120,22 @@ using BlazorApp.Data;
     BlazoredModalInstance ModalInstance { get; set; }
 
     [Parameter]
-    public MarketingCampaign EditMarketCampaign { get; set; }
+    public MarketingCampaign EditAdvertiser { get; set; }
 
-    private MarketingCampaign MarketingCampaign { get; set; }
+    private Advertiser Advertiser { get; set; }
 
 
     protected override void OnInitialized()
     {
-        MarketingCampaign = new MarketingCampaign()
+        Advertiser = new Advertiser()
         {
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Now.Add(new TimeSpan(5))
         };
     }
 
     void SubmitForm()
     {
-        ModalInstance.CloseAsync(ModalResult.Ok(MarketingCampaign));
+        Advertiser.Id = MarketingCampaignService.Advertisers.Count + 1;
+        ModalInstance.CloseAsync(ModalResult.Ok(Advertiser));
     }
 
     void Cancel()

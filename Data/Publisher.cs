@@ -6,6 +6,7 @@ namespace BlazorApp.Data
     {
         public long Id;
         public string Name;
+        public string Email;
         public Channel[] Channels;
         public long[] ChannelsIds;
         public MarketingCampaign[] MarketingCampaigns;

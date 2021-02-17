@@ -6,6 +6,6 @@ namespace BlazorApp.Data
     {
         public long Id;
         public string Name;
-        
+        public string Email;
     }
 }

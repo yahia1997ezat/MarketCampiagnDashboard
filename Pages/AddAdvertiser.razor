@@ -6,62 +6,14 @@
         <div class="row p-0">
             <div class="@fieldLayoutClass">
                 <div class="form-group">
-                    <label for="movie-name">Movie Name</label>
-                    <input @bind="@MarketingCampaign.Name" type="text" class="form-control" id="movie-name"/>
-                </div>
-            </div>
-            <div class="@fieldLayoutClass">
+                    <label for="Name">Name</label>
+                    <input @bind="@Advertiser.Name" type="text" class="form-control" id="Name"/>
+                </div> 
                 <div class="form-group">
-                    <label for="start-date">Start Date</label>
-                    <input @bind="@MarketingCampaign.StartDate" type="date" class="form-control" id="start-date"/>
+                    <label for="Email">Email</label>
+                    <input @bind="@Advertiser.Email" type="text" class="form-control" id="Email"/>
                 </div>
             </div>
-            <div class="@fieldLayoutClass">
-                <div class="form-group">
-                    <label for="end-date">End Date</label>
-                    <input @bind="@MarketingCampaign.EndDate" type="date" class="form-control" id="end-date"/>
-                </div>
-            </div>
-            <div class="@fieldLayoutClass">
-                <div class="form-group">
-                    <label for="end-date">Media</label>
-                    <select class="form-select d-block w-100 p-3 py-1 border" @bind="@MarketingCampaign.MediaId">
-                        @foreach (var media in  MarketingCampaignService.Medias)
-                        {
-                            <option value="@media.Id">
-                                @media.Name
-                            </option>
-                        }
-                    </select>
-                </div>
-            </div>
-            <div class="@fieldLayoutClass">
-                <div class="form-group">
-                    <label for="end-date">Choose Advertiser</label>
-                    <select class="form-select d-block w-100 p-3 py-1 border" @bind="@MarketingCampaign.AdvertiserId">
-                        @foreach (var advertiser in MarketingCampaignService.Advertisers)
-                        {
-                            <option value="@advertiser.Id">
-                                @advertiser.Name
-                            </option>
-                        }
-                    </select>
-                </div>
-            </div>
-            <div class="@fieldLayoutClass">
-                <div class="form-group">
-                    <label for="end-date">Choose Publisher</label>
-                    <select class="form-select d-block w-100 p-3 py-1 border" @bind="@MarketingCampaign.PublisherId">
-                        @foreach (var publisher in MarketingCampaignService.Publishers)
-                        {
-                            <option value="@publisher.Id">
-                                @publisher.Name
-                            </option>
-                        }
-                    </select>
-                </div>
-            </div>
-
         </div>
     </form>
     <button @onclick="SubmitForm" class="btn btn-primary">Submit</button>
@@ -76,23 +28,22 @@
     BlazoredModalInstance ModalInstance { get; set; }
 
     [Parameter]
-    public MarketingCampaign EditMarketCampaign { get; set; }
+    public MarketingCampaign EditAdvertiser { get; set; }
 
-    private MarketingCampaign MarketingCampaign { get; set; }
+    private Advertiser Advertiser { get; set; }
 
 
     protected override void OnInitialized()
     {
-        MarketingCampaign = new MarketingCampaign()
+        Advertiser = new Advertiser()
         {
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Now.Add(new TimeSpan(5))
         };
     }
 
     void SubmitForm()
     {
-        ModalInstance.CloseAsync(ModalResult.Ok(MarketingCampaign));
+        Advertiser.Id = MarketingCampaignService.Advertisers.Count + 1;
+        ModalInstance.CloseAsync(ModalResult.Ok(Advertiser));
     }
 
     void Cancel()

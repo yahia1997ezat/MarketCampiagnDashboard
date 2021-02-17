@@ -1,4 +1,4 @@
-@page "/publishers"
+@page "/advertisers"
 
 @using BlazorApp.Data
 @inject MarketingCampaignService MarketingCampaignService
@@ -7,12 +7,12 @@
         <div>
             <b>
                 Advertisers<br/>
-                <small>This component demonstrates fetching data from a service.</small>
+                <small>This page shows the advertisers who can request for a market campiagn.</small>
             </b>
         </div>
         <div>
             <button class="btn btn-info text-capitalize" @onclick="@(() => ShowEdit(0))">
-                <i class="fa fa-add"></i> add
+             add     <i class="fa fa-plus"></i>
             </button>
         </div>
 
@@ -31,8 +31,7 @@
                 <tr>
                     <th>No.</th>
                     <th>Name</th>
-                    @* <th>Supported Channels</th> *@
-                    @* <th>Market Campaign</th> *@
+                    <th>Email</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -42,19 +41,7 @@
                     <tr>
                         <td>@advertiser.Id</td>
                         <td>@advertiser.Name</td>
-                        @* <th> *@
-                        @*     @foreach (var channel in publisher.Channels) *@
-                        @*     { *@
-                        @*         <span class="mr-2">@channel?.Name,</span> *@
-                        @*     } *@
-                        @* </th> *@
-                        @* <th> *@
-                        @* *@
-                        @*     @foreach (var marketingCampaign in publisher.MarketingCampaigns) *@
-                        @*     { *@
-                        @*         <span class="mr-2">@marketingCampaign?.Name,</span> *@
-                        @*     } *@
-                        @* </th> *@
+                        <td>@advertiser.Email</td>
                         <td>
                             <button @onclick="@(() => ShowEdit(@advertiser.Id))" class="btn btn-light ">
                                 <i class="fa fa-edit text-primary"></i>

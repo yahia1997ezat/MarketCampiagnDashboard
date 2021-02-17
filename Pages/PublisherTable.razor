@@ -28,7 +28,7 @@
         {
             <table class="table">
                 <thead>
-                <tr>
+                <tr class="text-uppercase   text-secondary ">
                     <th>No.</th>
                     <th>Name</th>
                     <th>Supported Channels</th>
@@ -42,19 +42,19 @@
                     <tr>
                         <td>@publisher.Id</td>
                         <td>@publisher.Name</td>
-                        <th>
+                        <td>
                             @foreach (var channel in publisher.Channels)
                             {
                                 <span class="mr-2">@channel?.Name,</span>
                             }
-                        </th>
-                        <th>
+                        </td>
+                        <td>
 
                             @foreach (var marketingCampaign in publisher.MarketingCampaigns)
                             {
                                 <span class="mr-2">@marketingCampaign?.Name,</span>
                             }
-                        </th>
+                        </td>
                         <td>
                             <button @onclick="@(() => ShowEditPublisher(@publisher.Id))" class="btn btn-light ">
                                 <i class="fa fa-edit text-primary"></i>

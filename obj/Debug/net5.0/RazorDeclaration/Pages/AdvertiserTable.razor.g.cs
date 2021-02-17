@@ -103,7 +103,7 @@ using BlazorApp.Data;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/publishers")]
+    [Microsoft.AspNetCore.Components.RouteAttribute("/advertisers")]
     public partial class AdvertiserTable : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -112,7 +112,7 @@ using BlazorApp.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 73 "C:\projects\blazor\BlazorApp\Pages\AdvertiserTable.razor"
+#line 60 "C:\projects\blazor\BlazorApp\Pages\AdvertiserTable.razor"
        
 
     [CascadingParameter]

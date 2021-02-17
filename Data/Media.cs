@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace BlazorApp.Data
 {
@@ -8,9 +9,7 @@ namespace BlazorApp.Data
         public string Name;
         public DateTime CreatedAt;
         public string MediaFile;
-        public Channel[] Channels;
-        public long[] ChannelIds;
+        public IList<Channel> Channels;
         public Advertiser Advertiser;
-        public long AdvertiserId;
     }
 }

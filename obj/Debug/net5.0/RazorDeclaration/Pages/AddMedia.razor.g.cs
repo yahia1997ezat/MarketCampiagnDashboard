@@ -103,6 +103,13 @@ using BlazorApp.Data;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 2 "C:\projects\blazor\BlazorApp\Pages\AddMedia.razor"
+using System.Collections;
+
+#line default
+#line hidden
+#nullable disable
     public partial class AddMedia : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -111,10 +118,11 @@ using BlazorApp.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 71 "C:\projects\blazor\BlazorApp\Pages\AddMedia.razor"
+#line 62 "C:\projects\blazor\BlazorApp\Pages\AddMedia.razor"
        
 
     private string fieldLayoutClass = "col-12 ";
+    private string status = "";
 
     [CascadingParameter]
     BlazoredModalInstance ModalInstance { get; set; }
@@ -122,21 +130,51 @@ using BlazorApp.Data;
     [Parameter]
     public MarketingCampaign EditMarketCampaign { get; set; }
 
-    private MarketingCampaign MarketingCampaign { get; set; }
+    private Media Media { get; set; }
 
+    private long MediaAdvertiserId { get; set; }
+
+    bool IsSelected(Channel channel)
+    {
+        var cha = Media.Channels.FirstOrDefault(element => element.Id == channel.Id);
+        return cha != null ? true : false;
+    }
 
     protected override void OnInitialized()
     {
-        MarketingCampaign = new MarketingCampaign()
+        Media = new Media()
         {
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Now.Add(new TimeSpan(5))
+            Channels = new List<Channel>()
         };
     }
 
     void SubmitForm()
     {
-        ModalInstance.CloseAsync(ModalResult.Ok(MarketingCampaign));
+        if (MediaAdvertiserId > 0)
+        {
+            Media.Advertiser = MarketingCampaignService.Advertisers.FirstOrDefault((advertiser) => advertiser.Id == MediaAdvertiserId);
+        }
+        else
+        {
+            status = "Advertiser Required";
+            StateHasChanged();
+            return;
+        }
+        Media.CreatedAt = DateTime.Now;
+        ModalInstance.CloseAsync(ModalResult.Ok(Media));
+    }
+
+    void OnChannelChange(bool result, Channel channel)
+    {
+        if (!result)
+        {
+            Media.Channels.Add(channel);
+        }
+        else
+        {
+            Media.Channels.Remove(channel);
+        }
+        StateHasChanged();
     }
 
     void Cancel()

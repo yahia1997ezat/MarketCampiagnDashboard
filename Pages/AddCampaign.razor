@@ -6,17 +6,23 @@
         <div class="row p-0">
             <div class="@fieldLayoutClass">
                 <div class="form-group">
-                    <label for="movie-name">Movie Name</label>
+                    <label for="movie-name">Marketing Campiagn Name</label>
                     <input @bind="@MarketingCampaign.Name" type="text" class="form-control" id="movie-name"/>
                 </div>
             </div>
-            <div class="@fieldLayoutClass">
+              <div class="@fieldLayoutClass">
+                            <div class="form-group">
+                                <label for="movie-name">Budget ($)</label>
+                                <input @bind="@MarketingCampaign.Budget" type="text" class="form-control" id="movie-name"/>
+                            </div>
+                        </div>
+            <div class="col-6">
                 <div class="form-group">
                     <label for="start-date">Start Date</label>
                     <input @bind="@MarketingCampaign.StartDate" type="date" class="form-control" id="start-date"/>
                 </div>
             </div>
-            <div class="@fieldLayoutClass">
+            <div class="col-6">
                 <div class="form-group">
                     <label for="end-date">End Date</label>
                     <input @bind="@MarketingCampaign.EndDate" type="date" class="form-control" id="end-date"/>
@@ -64,13 +70,20 @@
 
         </div>
     </form>
+    @if (@_status.Length > 0)
+    {
+        <div class="alert-danger my-3 p-3">
+            @_status
+        </div>
+    }
     <button @onclick="SubmitForm" class="btn btn-primary">Submit</button>
     <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
 </div>
 
 @code {
 
-    private string fieldLayoutClass = "col-12 ";
+    private string fieldLayoutClass = "col-6 ";
+    private string _status = "";
 
     [CascadingParameter]
     BlazoredModalInstance ModalInstance { get; set; }
@@ -86,12 +99,33 @@
         MarketingCampaign = new MarketingCampaign()
         {
             StartDate = DateTime.Now,
-            EndDate = DateTime.Now.Add(new TimeSpan(5))
+            EndDate = DateTime.Now
         };
     }
 
     void SubmitForm()
     {
+        MarketingCampaign.Advertiser = MarketingCampaignService.Advertisers.FirstOrDefault(advertiser => advertiser.Id == MarketingCampaign.AdvertiserId);
+        if (MarketingCampaign.Advertiser == null)
+        {
+            _status = "Advertiser is Required";
+            StateHasChanged();
+            return;
+        }
+        MarketingCampaign.Media = MarketingCampaignService.Medias.FirstOrDefault(media => media.Id == MarketingCampaign.MediaId);
+        if (MarketingCampaign.Media == null)
+        {
+            _status = "Media is Required";
+            StateHasChanged();
+            return;
+        }
+        MarketingCampaign.Publisher = MarketingCampaignService.Publishers.FirstOrDefault(publisher => publisher.Id == MarketingCampaign.MediaId);
+        if (MarketingCampaign.Media == null)
+        {
+            _status = "Publisher is Required";
+            StateHasChanged();
+            return;
+        }
         ModalInstance.CloseAsync(ModalResult.Ok(MarketingCampaign));
     }
 

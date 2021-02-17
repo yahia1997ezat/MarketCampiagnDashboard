@@ -31,7 +31,6 @@
                 <tr>
                     <th>No.</th>
                     <th>Name</th>
-                    <th>Preview</th>
                     <th>Advertiser</th>
                     <th>CreatedAt</th>
                     <th>Channels</th>
@@ -42,29 +41,26 @@
                 @foreach (var media in MarketingCampaignService.Medias)
                 {
                     <tr>
-                        <th>@media.Id</th>
-                        <th>@media.Name</th>
-                        <th>
-                            @if (@media.MediaFile != null)
-                            {
-                                <a href="@media.MediaFile">
-                                    <i class="fa fa-link"></i>
-                                </a>
-                            }
-
-                        </th>
-                        <th>@media.Advertiser?.Name</th>
-                        <th>@media.CreatedAt</th>
-                        <th>
+                        <td>@media.Id</td>
+                        <td>@media.Name</td>
+                        <td>@media.Advertiser?.Name</td>
+                        <td>@media.CreatedAt</td>
+                        <td>
                             @foreach (var channel in media.Channels)
                             {
                                 <span class="mr-2">@channel?.Name,</span>
                             }
-                        </th>
+                        </td>
                         <td>
                             <button @onclick="@(() => ShowEditCampaign(media.Id))" class="btn btn-light ">
                                 <i class="fa fa-edit text-primary"></i>
                             </button>
+                            @if (@media.MediaFile != null)
+                            {
+                                <a href="@media.MediaFile" class="btn btn-light mx-3">
+                                    <i class="fa fa-link text-warning"></i>
+                                </a>
+                            }
                         </td>
                     </tr>
                 }

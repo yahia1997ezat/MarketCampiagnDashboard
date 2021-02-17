@@ -1,4 +1,5 @@
 @using BlazorApp.Data
+@using System.Collections
 @inject MarketingCampaignService MarketingCampaignService
 
 <div class="simple-form">
@@ -6,39 +7,39 @@
         <div class="row p-0">
             <div class="@fieldLayoutClass">
                 <div class="form-group">
-                    <label for="movie-name">Movie Name</label>
-                    <input @bind="@MarketingCampaign.Name" type="text" class="form-control" id="movie-name"/>
+                    <label for="movie-name">Name</label>
+                    <input @bind="@Media.Name" type="text" class="form-control" id="movie-name"/>
                 </div>
             </div>
             <div class="@fieldLayoutClass">
                 <div class="form-group">
-                    <label for="start-date">Start Date</label>
-                    <input @bind="@MarketingCampaign.StartDate" type="date" class="form-control" id="start-date"/>
+                    <label for="MediaFile">Media File</label>
+                    <input @bind="@Media.MediaFile" type="text" class="form-control" id="MediaFile"/>
                 </div>
             </div>
             <div class="@fieldLayoutClass">
                 <div class="form-group">
-                    <label for="end-date">End Date</label>
-                    <input @bind="@MarketingCampaign.EndDate" type="date" class="form-control" id="end-date"/>
-                </div>
-            </div>
-            <div class="@fieldLayoutClass">
-                <div class="form-group">
-                    <label for="end-date">Media</label>
-                    <select class="form-select d-block w-100 p-3 py-1 border" @bind="@MarketingCampaign.MediaId">
-                        @foreach (var media in  MarketingCampaignService.Medias)
-                        {
-                            <option value="@media.Id">
-                                @media.Name
-                            </option>
-                        }
-                    </select>
+                    <label >Channels</label>
+                    @foreach (var channel in MarketingCampaignService.Channels)
+                    {
+                        <div class="mb-2">
+                            <input
+                                @onchange="@(e => OnChannelChange(@IsSelected(channel), @channel))"
+                                 type="checkbox"
+                                 checked="@IsSelected(channel)"
+                                 id="@channel?.Name"
+                                 name="@channel?.Name">
+                            <label for="@channel?.Name">
+                                @channel?.Name
+                            </label>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="@fieldLayoutClass">
                 <div class="form-group">
                     <label for="end-date">Choose Advertiser</label>
-                    <select class="form-select d-block w-100 p-3 py-1 border" @bind="@MarketingCampaign.AdvertiserId">
+                    <select class="form-select d-block w-100 p-3 py-1 border" @bind="@MediaAdvertiserId">
                         @foreach (var advertiser in MarketingCampaignService.Advertisers)
                         {
                             <option value="@advertiser.Id">
@@ -48,22 +49,12 @@
                     </select>
                 </div>
             </div>
-            <div class="@fieldLayoutClass">
-                <div class="form-group">
-                    <label for="end-date">Choose Publisher</label>
-                    <select class="form-select d-block w-100 p-3 py-1 border" @bind="@MarketingCampaign.PublisherId">
-                        @foreach (var publisher in MarketingCampaignService.Publishers)
-                        {
-                            <option value="@publisher.Id">
-                                @publisher.Name
-                            </option>
-                        }
-                    </select>
-                </div>
-            </div>
 
         </div>
     </form>
+    <div class="alert-danger">
+        @status
+    </div>
     <button @onclick="SubmitForm" class="btn btn-primary">Submit</button>
     <button @onclick="Cancel" class="btn btn-secondary">Cancel</button>
 </div>
@@ -71,6 +62,7 @@
 @code {
 
     private string fieldLayoutClass = "col-12 ";
+    private string status = "";
 
     [CascadingParameter]
     BlazoredModalInstance ModalInstance { get; set; }
@@ -78,21 +70,51 @@
     [Parameter]
     public MarketingCampaign EditMarketCampaign { get; set; }
 
-    private MarketingCampaign MarketingCampaign { get; set; }
+    private Media Media { get; set; }
 
+    private long MediaAdvertiserId { get; set; }
+
+    bool IsSelected(Channel channel)
+    {
+        var cha = Media.Channels.FirstOrDefault(element => element.Id == channel.Id);
+        return cha != null ? true : false;
+    }
 
     protected override void OnInitialized()
     {
-        MarketingCampaign = new MarketingCampaign()
+        Media = new Media()
         {
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Now.Add(new TimeSpan(5))
+            Channels = new List<Channel>()
         };
     }
 
     void SubmitForm()
     {
-        ModalInstance.CloseAsync(ModalResult.Ok(MarketingCampaign));
+        if (MediaAdvertiserId > 0)
+        {
+            Media.Advertiser = MarketingCampaignService.Advertisers.FirstOrDefault((advertiser) => advertiser.Id == MediaAdvertiserId);
+        }
+        else
+        {
+            status = "Advertiser Required";
+            StateHasChanged();
+            return;
+        }
+        Media.CreatedAt = DateTime.Now;
+        ModalInstance.CloseAsync(ModalResult.Ok(Media));
+    }
+
+    void OnChannelChange(bool result, Channel channel)
+    {
+        if (!result)
+        {
+            Media.Channels.Add(channel);
+        }
+        else
+        {
+            Media.Channels.Remove(channel);
+        }
+        StateHasChanged();
     }
 
     void Cancel()

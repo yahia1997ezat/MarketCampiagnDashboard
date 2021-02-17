@@ -112,7 +112,7 @@ using BlazorApp.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 79 "C:\projects\blazor\BlazorApp\Pages\MediaTable.razor"
+#line 75 "C:\projects\blazor\BlazorApp\Pages\MediaTable.razor"
        
 
     [CascadingParameter]

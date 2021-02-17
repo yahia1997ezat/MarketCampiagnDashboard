@@ -104,7 +104,7 @@ using Blazored.Modal.Services;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 12 "C:\projects\blazor\BlazorApp\Shared\SurveyPrompt.razor"
+#line 10 "C:\projects\blazor\BlazorApp\Shared\SurveyPrompt.razor"
        
     // Demonstrates how a parent component can supply parameters
     [Parameter]

@@ -111,10 +111,11 @@ using BlazorApp.Data;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 71 "C:\projects\blazor\BlazorApp\Pages\AddCampaign.razor"
+#line 83 "C:\projects\blazor\BlazorApp\Pages\AddCampaign.razor"
        
 
-    private string fieldLayoutClass = "col-12 ";
+    private string fieldLayoutClass = "col-6 ";
+    private string _status = "";
 
     [CascadingParameter]
     BlazoredModalInstance ModalInstance { get; set; }
@@ -130,12 +131,33 @@ using BlazorApp.Data;
         MarketingCampaign = new MarketingCampaign()
         {
             StartDate = DateTime.Now,
-            EndDate = DateTime.Now.Add(new TimeSpan(5))
+            EndDate = DateTime.Now
         };
     }
 
     void SubmitForm()
     {
+        MarketingCampaign.Advertiser = MarketingCampaignService.Advertisers.FirstOrDefault(advertiser => advertiser.Id == MarketingCampaign.AdvertiserId);
+        if (MarketingCampaign.Advertiser == null)
+        {
+            _status = "Advertiser is Required";
+            StateHasChanged();
+            return;
+        }
+        MarketingCampaign.Media = MarketingCampaignService.Medias.FirstOrDefault(media => media.Id == MarketingCampaign.MediaId);
+        if (MarketingCampaign.Media == null)
+        {
+            _status = "Media is Required";
+            StateHasChanged();
+            return;
+        }
+        MarketingCampaign.Publisher = MarketingCampaignService.Publishers.FirstOrDefault(publisher => publisher.Id == MarketingCampaign.MediaId);
+        if (MarketingCampaign.Media == null)
+        {
+            _status = "Publisher is Required";
+            StateHasChanged();
+            return;
+        }
         ModalInstance.CloseAsync(ModalResult.Ok(MarketingCampaign));
     }
 
